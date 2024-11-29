@@ -75,7 +75,8 @@ function Auth() {
           }),
           { "Content-Type": "application/json" }
         );
-        auth.login(resData.user.id);
+
+        auth.login(resData.userId, resData.token);
       } catch (error) {}
     } else {
       try {
@@ -90,7 +91,7 @@ function Auth() {
           formData
         );
 
-        auth.login(resData.user.id);
+        auth.login(resData.userId, resData.token);
       } catch (error) {}
     }
   };

@@ -30,7 +30,11 @@ export const PlaceItem = (props) => {
     try {
       await sendReq(
         `${process.env.REACT_APP_BACKEND_URL}/places/${props.id}`,
-        "DELETE"
+        "DELETE",
+        null,
+        {
+          Authorization: "Bearer " + auth.token,
+        }
       );
       props.onDelete(props.id);
     } catch (error) {}

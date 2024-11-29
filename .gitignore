@@ -1,0 +1,8 @@
+# Ignore package.json in the frontend folder
+frontend/package.json
+
+# Ignore package.json in the backend folder
+backend/package.json
+
+# Ignore the entire node-express folder
+node-express/

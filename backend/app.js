@@ -4,12 +4,12 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-// const mongoPractice = require("./mongoose");
 
+// const mongoPractice = require("./mongoose");
 const placesRoutes = require("./routes/places-routes");
 const userRoutes = require("./routes/users-routes");
-
 const HttpError = require("./models/http-error");
+
 const app = express();
 
 const url = process.env.DB_Palce;
@@ -17,6 +17,7 @@ const url = process.env.DB_Palce;
 app.use(bodyParser.json());
 
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE");
   next();
 });
+
 app.use("/api/places", placesRoutes);
 app.use("/api/users", userRoutes);
 // app.post("/products", mongoPractice.createProduct);

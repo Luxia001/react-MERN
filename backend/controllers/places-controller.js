@@ -6,11 +6,9 @@ const HttpError = require("../models/http-error");
 const getCoordsForAddress = require("../util/location");
 const Place = require("../models/place");
 const User = require("../models/user");
-const place = require("../models/place");
 
 const getPlaceById = async (req, res, next) => {
   const placeID = req.params.pid;
-  console.log("GET places : " + placeID);
   try {
     const place = await Place.findById(placeID).exec();
     if (!place) {
@@ -64,11 +62,12 @@ const createPlace = async (req, res, next) => {
   const createdPlace = new Place({
     title,
     description,
-    image: req.file.path,
     address,
+    image: req.file.path,
     location: coordinates,
     creator,
   });
+
   let user;
   try {
     user = await User.findById(creator);
@@ -77,7 +76,7 @@ const createPlace = async (req, res, next) => {
   }
 
   if (!user) {
-    return next(new HttpError("cant find id", 500));
+    return next(new HttpError("cant find id", 404));
   }
 
   try {
@@ -87,12 +86,14 @@ const createPlace = async (req, res, next) => {
     user.places.push(createdPlace);
     await user.save({ session: sess });
     await sess.commitTransaction();
-
-    res.status(201).json({ place: createdPlace });
   } catch (err) {
-    const error = new HttpError(err, 500);
+    const error = new HttpError(
+      "Creating place failed, please try again.",
+      500
+    );
     return next(error);
   }
+  res.status(201).json({ place: createdPlace });
 };
 
 const updatePlace = async (req, res, next) => {
@@ -105,6 +106,9 @@ const updatePlace = async (req, res, next) => {
   let place;
   try {
     place = await Place.findById(placeId);
+    if (place.creator.toString() !== req.userData.userId) {
+      return next(new HttpError("not allowed", 401));
+    }
     place.title = title;
     place.description = description;
     await place.save();
@@ -127,6 +131,9 @@ const deletePlace = async (req, res, next) => {
   }
   if (!place) {
     return next(new HttpError("cant find place id", 404));
+  }
+  if (place.creator.id !== req.userData.userId) {
+    return next(new HttpError("not allowed", 401));
   }
   const imagePath = place.image;
   try {
