@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Users } from "./user/pages/Users";
 import { Course } from "./listCourse/pages/Course";
 import { Redirect, Switch } from "react-router-dom/cjs/react-router-dom.min";
@@ -11,20 +11,10 @@ import { PageTest } from "./test/page/pageTest";
 import UpdatePlace from "./places/pages/UpdatePlace";
 import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/auth-context";
+import { useAuth } from "./shared/hooks/auth-hook";
 
 function App() {
-  const [token, setToken] = useState(false);
-  const [userId, setUserId] = useState();
-
-  const login = useCallback((uid, token) => {
-    setToken(token);
-    setUserId(uid);
-  });
-  const logout = useCallback(() => {
-    setToken(null);
-    setUserId(null);
-  });
-
+  const { token, tokenExpDate, userId, login, logout } = useAuth();
   let routes;
   if (token) {
     routes = (
