@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const { validationResult } = require("express-validator");
@@ -52,7 +52,7 @@ const signup = async (req, res, next) => {
     try {
       token = jwt.sign(
         { userId: createdUser.id, email: createdUser.email },
-        "supersecret_dont_share",
+        process.env.JWT_KEY,
         { expiresIn: "24h" }
       );
     } catch (error) {
@@ -93,7 +93,7 @@ const login = async (req, res, next) => {
     try {
       token = jwt.sign(
         { userId: existingUser.id, email: existingUser.email },
-        "supersecret_dont_share",
+        process.env.JWT_KEY,
         { expiresIn: "24h" }
       );
     } catch (error) {

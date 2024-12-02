@@ -93,7 +93,7 @@ export const PlaceItem = (props) => {
           {loading && <LoadingSpinner asOverlay></LoadingSpinner>}
           <div className="place-item__image">
             <img
-              src={`http://localhost:5000/${props.image}`}
+              src={`${process.env.REACT_APP_ASSET_URL}/${props.image}`}
               alt=""
             />
           </div>

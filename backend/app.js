@@ -27,7 +27,9 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE");
   next();
 });
-
+app.use("/", async (req, res, next) => {
+  res.json({ message: "hello world" });
+});
 app.use("/api/places", placesRoutes);
 app.use("/api/users", userRoutes);
 // app.post("/products", mongoPractice.createProduct);
@@ -54,10 +56,11 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(url)
   .then(() => {
-    app.listen(5000);
-    console.log("conected database place");
-    console.log(`http://localhost:5000`);
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
   })
   .catch((err) => {
-    console.log(err);
+    console.error("Database connection failed:", err);
   });

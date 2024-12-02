@@ -12,7 +12,7 @@ export const Users = () => {
     document.title = "user";
     const fetchUser = async () => {
       try {
-        const res = await sendReq("http://localhost:5000/api/users");
+        const res = await sendReq(`${process.env.REACT_APP_BACKEND_URL}/users`);
 
         setLoadUsers(res.users);
       } catch (error) {}
