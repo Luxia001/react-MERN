@@ -20,8 +20,8 @@
   background: #bd0808;
 }
 
-.user-item_content {
-  padding: 0;
+.card.user-item_content {
+  padding: 0 !important;
 }
 
 .user-item_image {
