@@ -1,9 +1,11 @@
 # Ignore package.json in the frontend folder
 frontend/package.json
+frontend/.env
 
 # Ignore package.json in the backend folder
 backend/package.json
 backend/nodemon.json
+backend/.env
 
 # Ignore the entire node-express folder
 node-express/
